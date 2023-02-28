@@ -35,7 +35,7 @@ export class TeamsController {
 
     @EventPattern(KysoEventEnum.TEAMS_CREATE)
     async handleTeamsCreate(kysoTeamsCreateEvent: KysoTeamsCreateEvent) {
-        const { user, organization, team, frontendUrl } = kysoTeamsCreateEvent
+        const { user, organization, team, frontendUrl } = kysoTeamsCreateEvent as any
         const teamUrl = `${frontendUrl}/${organization.sluglified_name}/${team.sluglified_name}`
         const text = `User *${user.name}* created the channel <${teamUrl}|${team.display_name}>`
         sendMessageToTeamsChannel(organization, null, text)
