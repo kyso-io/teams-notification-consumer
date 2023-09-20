@@ -7,9 +7,9 @@ import { sendMessageToTeamsChannel } from '../helpers'
 export class OrganizationsController {
     @EventPattern(KysoEventEnum.ORGANIZATIONS_ADD_MEMBER)
     async handleOrganizationsAddMember(kysoOrganizationsAddMemberEvent: KysoOrganizationsAddMemberEvent) {
-        const { organization, user, frontendUrl, role } = kysoOrganizationsAddMemberEvent
+        const { organization, userCreatingAction, frontendUrl, newRole } = kysoOrganizationsAddMemberEvent
         const organizationUrl = `${frontendUrl}/${organization.sluglified_name}`
-        const text = `User *${user.name}* added to the organization <${organizationUrl}|${organization.display_name}> with the role *${role}*`
+        const text = `User *${userCreatingAction.name}* added to the organization <${organizationUrl}|${organization.display_name}> with the role *${newRole}*`
         sendMessageToTeamsChannel(organization, null, text)
     }
     @EventPattern(KysoEventEnum.ORGANIZATIONS_UPDATE_MEMBER_ROLE)

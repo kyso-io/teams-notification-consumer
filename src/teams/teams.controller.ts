@@ -7,9 +7,9 @@ import { sendMessageToTeamsChannel } from '../helpers'
 export class TeamsController {
     @EventPattern(KysoEventEnum.TEAMS_ADD_MEMBER)
     async handleTeamsAddMember(kysoTeamsAddMemberEvent: KysoTeamsAddMemberEvent) {
-        const { organization, team, user, frontendUrl, roles } = kysoTeamsAddMemberEvent
+        const { organization, team, userCreatingAction, frontendUrl, roles } = kysoTeamsAddMemberEvent
         const teamUrl = `${frontendUrl}/${organization.sluglified_name}/${team.sluglified_name}`
-        const text = `User *${user.name}* added to the channel <${teamUrl}|${team.display_name}> with the ${
+        const text = `User *${userCreatingAction.name}* added to the channel <${teamUrl}|${team.display_name}> with the ${
             roles.length > 1 ? `roles ${roles.map((role: string) => `*${role}*`).join(',')}` : `role *${roles[0]}*`
         }`
         sendMessageToTeamsChannel(organization, team, text)
@@ -17,9 +17,9 @@ export class TeamsController {
 
     @EventPattern(KysoEventEnum.TEAMS_UPDATE_MEMBER_ROLES)
     async handleTeamsUpdateMemberRoles(kysoTeamsUpdateMemberRolesEvent: KysoTeamsUpdateMemberRolesEvent) {
-        const { organization, team, user, frontendUrl, previousRoles, currentRoles } = kysoTeamsUpdateMemberRolesEvent
+        const { organization, team, userCreatingAction, frontendUrl, previousRoles, currentRoles } = kysoTeamsUpdateMemberRolesEvent
         const teamUrl = `${frontendUrl}/${organization.sluglified_name}/${team.sluglified_name}`
-        const text = `The roles of the User *${user.name}* have been updated from ${previousRoles.map((role: string) => `*${role}*`).join(',')} to ${currentRoles
+        const text = `The roles of the User *${userCreatingAction.name}* have been updated from ${previousRoles.map((role: string) => `*${role}*`).join(',')} to ${currentRoles
             .map((role: string) => `*${role}*`)
             .join(',')} in the <${teamUrl}|${team.display_name}> channel`
         sendMessageToTeamsChannel(organization, team, text)
